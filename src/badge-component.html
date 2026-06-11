@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>.badge 徽章组件使用文档</title>
+  <style>
+    /* =============================================
+       Badge 组件核心样式
+       ============================================= */
+
+    /* 基础样式 */
+    .badge {
+      display: inline-block;
+      padding: 4px 12px;
+      font-size: 13px;
+      font-weight: 600;
+      line-height: 1.4;
+      text-align: center;
+      white-space: nowrap;
+      vertical-align: middle;
+      border-radius: 12px;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    }
+
+    /* ---------- Primary 变体 ---------- */
+    /* 背景色: #0d6efd (蓝色)  文字色: #ffffff  圆角: 12px */
+    .badge-primary {
+      background-color: #0d6efd;
+      color: #ffffff;
+    }
+
+    /* ---------- Success 变体 ---------- */
+    /* 背景色: #198754 (绿色)  文字色: #ffffff  圆角: 12px */
+    .badge-success {
+      background-color: #198754;
+      color: #ffffff;
+    }
+
+    /* ---------- Warning 变体 ---------- */
+    /* 背景色: #ffc107 (黄色)  文字色: #212529  圆角: 12px */
+    .badge-warning {
+      background-color: #ffc107;
+      color: #212529;
+    }
+
+    /* ---------- Danger 变体 ---------- */
+    /* 背景色: #dc3545 (红色)  文字色: #ffffff  圆角: 12px */
+    .badge-danger {
+      background-color: #dc3545;
+      color: #ffffff;
+    }
+
+    /* ---------- 数字角标 ---------- */
+    /* 最小宽度 20px, 完全圆形圆角, 用于显示数字计数 */
+    .badge-count {
+      min-width: 20px;
+      padding: 2px 6px;
+      border-radius: 50%;
+      font-size: 12px;
+    }
+
+    /* 角标定位容器 */
+    .badge-wrapper {
+      position: relative;
+      display: inline-block;
+    }
+
+    .badge-wrapper .badge-count {
+      position: absolute;
+      top: -8px;
+      right: -8px;
+    }
+
+    /* =============================================
+       文档页面样式（非组件核心样式）
+       ============================================= */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      color: #1a1a2e;
+      background: #f8f9fa;
+      padding: 40px 20px;
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 860px;
+      margin: 0 auto;
+    }
+
+    h1 {
+      font-size: 28px;
+      margin-bottom: 8px;
+      color: #1a1a2e;
+    }
+
+    .subtitle {
+      color: #6c757d;
+      font-size: 15px;
+      margin-bottom: 36px;
+    }
+
+    .section {
+      background: #ffffff;
+      border-radius: 10px;
+      padding: 28px 32px;
+      margin-bottom: 24px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    }
+
+    .section h2 {
+      font-size: 18px;
+      margin-bottom: 16px;
+      color: #1a1a2e;
+      border-left: 4px solid #0d6efd;
+      padding-left: 12px;
+    }
+
+    .section p {
+      font-size: 14px;
+      color: #495057;
+      margin-bottom: 12px;
+    }
+
+    /* 变体展示表格 */
+    .variant-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 16px 0;
+      font-size: 14px;
+    }
+
+    .variant-table th,
+    .variant-table td {
+      padding: 10px 14px;
+      text-align: left;
+      border-bottom: 1px solid #e9ecef;
+    }
+
+    .variant-table th {
+      background: #f1f3f5;
+      font-weight: 600;
+      color: #495057;
+    }
+
+    .variant-table td code {
+      background: #f1f3f5;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 13px;
+      color: #d63384;
+    }
+
+    /* 示例展示区 */
+    .demo {
+      background: #f8f9fa;
+      border: 1px solid #e9ecef;
+      border-radius: 8px;
+      padding: 20px 24px;
+      margin: 16px 0;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 12px;
+    }
+
+    /* 代码块 */
+    pre {
+      background: #1a1a2e;
+      color: #e2e8f0;
+      padding: 18px 22px;
+      border-radius: 8px;
+      overflow-x: auto;
+      font-size: 13px;
+      line-height: 1.7;
+      margin: 16px 0;
+    }
+
+    pre .tag   { color: #7dd3fc; }
+    pre .attr  { color: #fbbf24; }
+    pre .val   { color: #86efac; }
+    pre .css-prop  { color: #c4b5fd; }
+    pre .css-val   { color: #86efac; }
+    pre .comment { color: #64748b; }
+
+    .icon-placeholder {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      background: #e9ecef;
+      border-radius: 8px;
+      font-size: 20px;
+      color: #6c757d;
+    }
+
+    .color-swatch {
+      display: inline-block;
+      width: 14px;
+      height: 14px;
+      border-radius: 3px;
+      vertical-align: middle;
+      margin-right: 4px;
+      border: 1px solid rgba(0,0,0,0.1);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+
+    <h1>.badge 徽章组件</h1>
+    <p class="subtitle">HTML / CSS 使用文档 &mdash; 四种语义变体 + 数字角标</p>
+
+    <!-- ====== 1. 变体说明 ====== -->
+    <div class="section">
+      <h2>1. 四种变体定义</h2>
+      <p>
+        <code>.badge</code> 是基础类，提供内联块级布局、内边距和圆角。
+        通过追加语义变体类名来设定背景色与文字色。
+      </p>
+
+      <table class="variant-table">
+        <thead>
+          <tr>
+            <th>变体</th>
+            <th>类名</th>
+            <th>背景色</th>
+            <th>文字色</th>
+            <th>圆角</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Primary</td>
+            <td><code>.badge-primary</code></td>
+            <td><span class="color-swatch" style="background:#0d6efd;"></span><code>#0d6efd</code></td>
+            <td><span class="color-swatch" style="background:#ffffff;"></span><code>#ffffff</code></td>
+            <td><code>12px</code></td>
+          </tr>
+          <tr>
+            <td>Success</td>
+            <td><code>.badge-success</code></td>
+            <td><span class="color-swatch" style="background:#198754;"></span><code>#198754</code></td>
+            <td><span class="color-swatch" style="background:#ffffff;"></span><code>#ffffff</code></td>
+            <td><code>12px</code></td>
+          </tr>
+          <tr>
+            <td>Warning</td>
+            <td><code>.badge-warning</code></td>
+            <td><span class="color-swatch" style="background:#ffc107;"></span><code>#ffc107</code></td>
+            <td><span class="color-swatch" style="background:#212529;"></span><code>#212529</code></td>
+            <td><code>12px</code></td>
+          </tr>
+          <tr>
+            <td>Danger</td>
+            <td><code>.badge-danger</code></td>
+            <td><span class="color-swatch" style="background:#dc3545;"></span><code>#dc3545</code></td>
+            <td><span class="color-swatch" style="background:#ffffff;"></span><code>#ffffff</code></td>
+            <td><code>12px</code></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="demo">
+        <span class="badge badge-primary">Primary</span>
+        <span class="badge badge-success">Success</span>
+        <span class="badge badge-warning">Warning</span>
+        <span class="badge badge-danger">Danger</span>
+      </div>
+
+<pre><span class="comment">&lt;!-- 基础用法 --&gt;</span>
+<span class="tag">&lt;span</span> <span class="attr">class</span>=<span class="val">"badge badge-primary"</span><span class="tag">&gt;</span>Primary<span class="tag">&lt;/span&gt;</span>
+<span class="tag">&lt;span</span> <span class="attr">class</span>=<span class="val">"badge badge-success"</span><span class="tag">&gt;</span>Success<span class="tag">&lt;/span&gt;</span>
+<span class="tag">&lt;span</span> <span class="attr">class</span>=<span class="val">"badge badge-warning"</span><span class="tag">&gt;</span>Warning<span class="tag">&lt;/span&gt;</span>
+<span class="tag">&lt;span</span> <span class="attr">class</span>=<span class="val">"badge badge-danger"</span><span class="tag">&gt;</span>Danger<span class="tag">&lt;/span&gt;</span></pre>
+    </div>
+
+    <!-- ====== 2. 核心 CSS ====== -->
+    <div class="section">
+      <h2>2. 核心 CSS 代码</h2>
+<pre><span class="comment">/* 基础样式 */</span>
+<span class="css-prop">.badge</span> {
+  <span class="css-prop">display</span>: <span class="css-val">inline-block</span>;
+  <span class="css-prop">padding</span>: <span class="css-val">4px 12px</span>;
+  <span class="css-prop">font-size</span>: <span class="css-val">13px</span>;
+  <span class="css-prop">font-weight</span>: <span class="css-val">600</span>;
+  <span class="css-prop">line-height</span>: <span class="css-val">1.4</span>;
+  <span class="css-prop">text-align</span>: <span class="css-val">center</span>;
+  <span class="css-prop">white-space</span>: <span class="css-val">nowrap</span>;
+  <span class="css-prop">vertical-align</span>: <span class="css-val">middle</span>;
+  <span class="css-prop">border-radius</span>: <span class="css-val">12px</span>;
+}
+
+<span class="comment">/* Primary — 蓝色 */</span>
+<span class="css-prop">.badge-primary</span> {
+  <span class="css-prop">background-color</span>: <span class="css-val">#0d6efd</span>;
+  <span class="css-prop">color</span>: <span class="css-val">#ffffff</span>;
+}
+
+<span class="comment">/* Success — 绿色 */</span>
+<span class="css-prop">.badge-success</span> {
+  <span class="css-prop">background-color</span>: <span class="css-val">#198754</span>;
+  <span class="css-prop">color</span>: <span class="css-val">#ffffff</span>;
+}
+
+<span class="comment">/* Warning — 黄色（深色文字以保证可读性） */</span>
+<span class="css-prop">.badge-warning</span> {
+  <span class="css-prop">background-color</span>: <span class="css-val">#ffc107</span>;
+  <span class="css-prop">color</span>: <span class="css-val">#212529</span>;
+}
+
+<span class="comment">/* Danger — 红色 */</span>
+<span class="css-prop">.badge-danger</span> {
+  <span class="css-prop">background-color</span>: <span class="css-val">#dc3545</span>;
+  <span class="css-prop">color</span>: <span class="css-val">#ffffff</span>;
+}
+
+<span class="comment">/* 数字角标 */</span>
+<span class="css-prop">.badge-count</span> {
+  <span class="css-prop">min-width</span>: <span class="css-val">20px</span>;
+  <span class="css-prop">padding</span>: <span class="css-val">2px 6px</span>;
+  <span class="css-prop">border-radius</span>: <span class="css-val">50%</span>;
+  <span class="css-prop">font-size</span>: <span class="css-val">12px</span>;
+}</pre>
+    </div>
+
+    <!-- ====== 3. 数字角标 ====== -->
+    <div class="section">
+      <h2>3. 数字角标 <code>.badge-count</code></h2>
+      <p>
+        <code>.badge-count</code> 用于在图标或按钮右上角显示未读数量。
+        它与 <code>.badge-wrapper</code> 定位容器配合使用，通过绝对定位将角标固定在右上角。
+        <code>border-radius: 50%</code> 使其呈现圆形外观。
+      </p>
+
+      <div class="demo">
+        <!-- 示例 A: 带角标的铃铛图标 -->
+        <span class="badge-wrapper">
+          <span class="icon-placeholder">&#128276;</span>
+          <span class="badge badge-count badge-danger">3</span>
+        </span>
+
+        <!-- 示例 B: 带角标的消息图标 -->
+        <span class="badge-wrapper">
+          <span class="icon-placeholder">&#9993;</span>
+          <span class="badge badge-count badge-primary">12</span>
+        </span>
+
+        <!-- 示例 C: 带角标的购物车图标 -->
+        <span class="badge-wrapper">
+          <span class="icon-placeholder">&#128722;</span>
+          <span class="badge badge-count badge-success">5</span>
+        </span>
+
+        <!-- 示例 D: 大数字角标 -->
+        <span class="badge-wrapper">
+          <span class="icon-placeholder">&#128172;</span>
+          <span class="badge badge-count badge-warning">99+</span>
+        </span>
+      </div>
+
+<pre><span class="comment">&lt;!-- HTML: 数字角标用法 --&gt;</span>
+<span class="tag">&lt;span</span> <span class="attr">class</span>=<span class="val">"badge-wrapper"</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;span</span> <span class="attr">class</span>=<span class="val">"icon-placeholder"</span><span class="tag">&gt;</span>&amp;#128276;<span class="tag">&lt;/span&gt;</span>
+  <span class="tag">&lt;span</span> <span class="attr">class</span>=<span class="val">"badge badge-count badge-danger"</span><span class="tag">&gt;</span>3<span class="tag">&lt;/span&gt;</span>
+<span class="tag">&lt;/span&gt;</span>
+
+<span class="tag">&lt;span</span> <span class="attr">class</span>=<span class="val">"badge-wrapper"</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;span</span> <span class="attr">class</span>=<span class="val">"icon-placeholder"</span><span class="tag">&gt;</span>&amp;#9993;<span class="tag">&lt;/span&gt;</span>
+  <span class="tag">&lt;span</span> <span class="attr">class</span>=<span class="val">"badge badge-count badge-primary"</span><span class="tag">&gt;</span>12<span class="tag">&lt;/span&gt;</span>
+<span class="tag">&lt;/span&gt;</span>
+
+<span class="tag">&lt;span</span> <span class="attr">class</span>=<span class="val">"badge-wrapper"</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;span</span> <span class="attr">class</span>=<span class="val">"icon-placeholder"</span><span class="tag">&gt;</span>&amp;#128722;<span class="tag">&lt;/span&gt;</span>
+  <span class="tag">&lt;span</span> <span class="attr">class</span>=<span class="val">"badge badge-count badge-success"</span><span class="tag">&gt;</span>5<span class="tag">&lt;/span&gt;</span>
+<span class="tag">&lt;/span&gt;</span>
+
+<span class="tag">&lt;span</span> <span class="attr">class</span>=<span class="val">"badge-wrapper"</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;span</span> <span class="attr">class</span>=<span class="val">"icon-placeholder"</span><span class="tag">&gt;</span>&amp;#128172;<span class="tag">&lt;/span&gt;</span>
+  <span class="tag">&lt;span</span> <span class="attr">class</span>=<span class="val">"badge badge-count badge-warning"</span><span class="tag">&gt;</span>99+<span class="tag">&lt;/span&gt;</span>
+<span class="tag">&lt;/span&gt;</span></pre>
+
+<pre><span class="comment">/* 角标定位容器 */</span>
+<span class="css-prop">.badge-wrapper</span> {
+  <span class="css-prop">position</span>: <span class="css-val">relative</span>;
+  <span class="css-prop">display</span>: <span class="css-val">inline-block</span>;
+}
+
+<span class="css-prop">.badge-wrapper .badge-count</span> {
+  <span class="css-prop">position</span>: <span class="css-val">absolute</span>;
+  <span class="css-prop">top</span>: <span class="css-val">-8px</span>;
+  <span class="css-prop">right</span>: <span class="css-val">-8px</span>;
+}</pre>
+    </div>
+
+    <!-- ====== 4. 使用指南 ====== -->
+    <div class="section">
+      <h2>4. 使用指南</h2>
+      <p><strong>基础徽章：</strong>始终同时添加 <code>.badge</code> 基础类和一个变体类（如 <code>.badge-primary</code>）。</p>
+      <p><strong>数字角标：</strong>在 <code>.badge</code> 基础上追加 <code>.badge-count</code> 类，并将整个组合放入 <code>.badge-wrapper</code> 容器中以实现右上角定位。</p>
+      <p><strong>无障碍：</strong>当角标仅含数字、无可见文本时，建议添加 <code>aria-label</code> 属性，例如 <code>aria-label="3 条未读消息"</code>。</p>
+
+<pre><span class="comment">&lt;!-- 无障碍示例 --&gt;</span>
+<span class="tag">&lt;span</span> <span class="attr">class</span>=<span class="val">"badge-wrapper"</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;button</span> <span class="attr">aria-label</span>=<span class="val">"通知"</span><span class="tag">&gt;</span>&#128276;<span class="tag">&lt;/button&gt;</span>
+  <span class="tag">&lt;span</span> <span class="attr">class</span>=<span class="val">"badge badge-count badge-danger"</span> <span class="attr">aria-label</span>=<span class="val">"3 条未读通知"</span><span class="tag">&gt;</span>3<span class="tag">&lt;/span&gt;</span>
+<span class="tag">&lt;/span&gt;</span></pre>
+    </div>
+
+  </div>
+</body>
+</html>
